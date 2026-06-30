@@ -1,8 +1,9 @@
-from core.contracts.builder import BuilderInterface
-from core.protocols.hl7.message import HL7Message
-from core.devices.accent_m320.schema import AccentM320Result
-from core.shared.rounder import rounder
 from loguru import logger
+
+from core.contracts.builder import BuilderInterface
+from core.devices.accent_m320.schema.schema import AccentM320Result
+from core.protocols.hl7.message import HL7Message
+from core.shared.rounder import rounder
 
 
 class Accent320Builder(BuilderInterface):

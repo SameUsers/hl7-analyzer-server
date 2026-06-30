@@ -1,5 +1,5 @@
-from core.devices.registry import DeviceProfile
 from core.application.handlers.analyzer import AnalyzerHandler
+from core.devices.registry import DeviceProfile
 
 
 class ComponentFactory:

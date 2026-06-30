@@ -1,15 +1,14 @@
-from typing import Optional
-
-from core.contracts.parser import ParserInterface
-from core.protocols.hl7.segments.msh import MSH
-from core.protocols.hl7.segments.obx import OBX
-from core.protocols.hl7.segments.obr import OBR
-from core.protocols.hl7.segments.pid import PID
-from core.protocols.hl7.message import HL7Message
 from loguru import logger
 
+from core.contracts.parser import ParserInterface
+from core.protocols.hl7.message import HL7Message
+from core.protocols.hl7.segments.msh import MSH
+from core.protocols.hl7.segments.obr import OBR
+from core.protocols.hl7.segments.obx import OBX
+from core.protocols.hl7.segments.pid import PID
 
-class Hl7ParserV1(ParserInterface):
+
+class Hl7Parser(ParserInterface):
     """
     Парсер HL7-сообщений (версия 1).
 
@@ -79,7 +78,7 @@ class Hl7ParserV1(ParserInterface):
         """
         return row.split("|")
 
-    def _build_segment(self, segment_name: str, values: list[str]) -> Optional[object]:
+    def _build_segment(self, segment_name: str, values: list[str]) -> object | None:
         """
         Создает объект сегмента из значений.
 
@@ -111,7 +110,7 @@ class Hl7ParserV1(ParserInterface):
             ValueError: Если в сообщении отсутствует обязательный сегмент MSH
 
         Example:
-            >>> parser = Hl7ParserV1()
+            >>> parser = Hl7Parser()
             >>> msg = "MSH|^~\\\\&|...\\rOBX|1|NM|..."
             >>> parsed = parser.process_message(msg)
             >>> parsed.msh  # Сегмент MSH
@@ -127,14 +126,11 @@ class Hl7ParserV1(ParserInterface):
             fields = self._extract_fields(row)
             if not fields:
                 continue
-
             segment_name = fields[0]
             values = fields[1:]
-
             segment = self._build_segment(segment_name, values)
             if segment is None:
                 continue
-
             if segment_name == "MSH":
                 msh = segment
             elif segment_name == "PID":
@@ -143,10 +139,6 @@ class Hl7ParserV1(ParserInterface):
                 obr = segment
             elif segment_name == "OBX":
                 obx_list.append(segment)
-
-        if msh is None:
-            raise ValueError("HL7 message must contain MSH segment")
-
         logger.debug(
             "Parsed HL7 message: MSH={}, PID={}, OBR={}, OBX count={}",
             msh is not None,
@@ -154,7 +146,6 @@ class Hl7ParserV1(ParserInterface):
             obr is not None,
             len(obx_list),
         )
-
         return HL7Message(
             msh=msh,
             pid=pid,

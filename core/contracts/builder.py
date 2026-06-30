@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from core.schemas.analyze_result import AnalyzeResult
 from core.protocols.schema import ProtocolMessage
+from core.schemas.analyze_result import AnalyzeResult
 
 
 class BuilderInterface(ABC):

@@ -72,10 +72,8 @@ def build_analyze_directory(
         'Analyze/BAC/2026-6-30'
     """
     dt = dt or current_datetime()
-
-    directory = root / analyzer_type / f"{dt.year}-{dt.month}-{dt.day}"
+    directory = root / analyzer_type / f"{dt:%Y-%m-%d}"
     directory.mkdir(parents=True, exist_ok=True)
-
     return directory
 
 

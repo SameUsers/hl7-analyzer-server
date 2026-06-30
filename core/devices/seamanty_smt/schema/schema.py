@@ -1,6 +1,4 @@
-from typing import Union
-
-from pydantic import Field, BaseModel
+from pydantic import BaseModel, Field
 
 from core.schemas.analyze_result import AnalyzeResult
 
@@ -221,14 +219,7 @@ class BrownSchema(BaseModel):
 
 
 # Тип для объединения всех схем Seamaty
-SeamatyResultData = Union[
-    RedSchema,
-    PinkSchema,
-    YellowSchema,
-    GreenSchema,
-    BrownSchema,
-]
-
+SeamatyResultData = RedSchema | PinkSchema | YellowSchema | GreenSchema | BrownSchema
 
 class SeamantyResult(AnalyzeResult[SeamatyResultData]):
     """

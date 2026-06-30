@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 
-from core.schemas.analyze_result import AnalyzeResult
+from loguru import logger
+
 from core.contracts.storage import StorageInterface
 from core.infrastructure.storage.save_to_json import SaveToJson
-from loguru import logger
+from core.schemas.analyze_result import AnalyzeResult
 
 
 class HandlerInterface(ABC):
@@ -51,9 +52,9 @@ class HandlerInterface(ABC):
             "Saving analyze result for {}",
             message.analyzer_name,
         )
-        return self._storage.save_analyze_result(message=message)
+        return await self._storage.save_analyze_result(message=message)
 
-    async def on_data(self, chunk: bytes) -> Optional[AnalyzeResult]:
+    async def on_data(self, chunk: bytes) -> AnalyzeResult | None:
         """
         Обрабатывает входящий блок данных.
 
@@ -89,7 +90,7 @@ class HandlerInterface(ABC):
         return message
 
     @abstractmethod
-    async def _on_data(self, chunk: bytes) -> Optional[AnalyzeResult]:
+    async def _on_data(self, chunk: bytes) -> AnalyzeResult | None:
         """
         Абстрактный метод для обработки данных.
 

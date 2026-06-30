@@ -48,7 +48,7 @@ class HL7Segment(BaseModel):
         field_values = {}
         for i, field_name in enumerate(fields):
             if i < len(values):
-                field_values[field_name] = values[i]
+                field_values[field_name] = values[i] if values[i] != "" else None
             else:
                 field_values[field_name] = None
 

@@ -1,12 +1,13 @@
-from core.contracts.parser import ParserInterface
-from core.contracts.builder import BuilderInterface
-from core.contracts.handler import HandlerInterface
-from core.schemas.analyze_result import AnalyzeResult
-from core.contracts.framer import FramerInterface
-from core.infrastructure.tcp.buffer import DefaultBuffer
-from core.contracts.storage import StorageInterface
-from core.shared.decoder import decode_message
 from loguru import logger
+
+from core.contracts.builder import BuilderInterface
+from core.contracts.framer import FramerInterface
+from core.contracts.handler import HandlerInterface
+from core.contracts.parser import ParserInterface
+from core.contracts.storage import StorageInterface
+from core.infrastructure.tcp.buffer import DefaultBuffer
+from core.schemas.analyze_result import AnalyzeResult
+from core.shared.decoder import decode_message
 
 
 class AnalyzerHandler(HandlerInterface):
@@ -98,7 +99,9 @@ class AnalyzerHandler(HandlerInterface):
 
     def __del__(self) -> None:
         """Деструктор для логирования удаления объекта."""
-        logger.debug("Deleting {} with builder={}", self, self.builder.__class__.__name__)
+        logger.debug(
+            "Deleting {} with builder={}", self, self.builder.__class__.__name__
+        )
 
     @property
     def buffer(self) -> DefaultBuffer:

@@ -1,5 +1,6 @@
-from core.contracts.handler import HandlerInterface
 from loguru import logger
+
+from core.contracts.handler import HandlerInterface
 
 
 class TCPSession:

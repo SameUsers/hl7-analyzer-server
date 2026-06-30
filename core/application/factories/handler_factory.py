@@ -1,5 +1,5 @@
-from core.devices.registry import DEVICE_REGISTRY
 from core.application.factories.component_factory import ComponentFactory
+from core.devices.registry import DEVICE_REGISTRY
 
 
 def create_handler(host: str):

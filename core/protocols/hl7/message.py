@@ -1,5 +1,3 @@
-from typing import Optional
-
 from core.protocols.hl7.segments.msh import MSH
 from core.protocols.hl7.segments.obr import OBR
 from core.protocols.hl7.segments.obx import OBX
@@ -37,10 +35,10 @@ class HL7Message(ProtocolMessage):
     msh: MSH
     """Сегмент заголовка сообщения (Message Header)."""
 
-    pid: Optional[PID] = None
+    pid: PID | None = None
     """Сегмент идентификации пациента (Patient Identification)."""
 
-    obr: Optional[OBR] = None
+    obr: OBR | None = None
     """Сегмент запроса на исследование (Observation Request)."""
 
     obx: list[OBX] = []

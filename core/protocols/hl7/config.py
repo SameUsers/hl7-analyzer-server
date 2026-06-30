@@ -1,8 +1,7 @@
 from core.infrastructure.tcp.buffer import DefaultBuffer
-from core.protocols.hl7.framer import Hl7FramerV1
-from core.protocols.hl7.parser import Hl7ParserV1
 from core.protocols.config import ProtocolConfig
-
+from core.protocols.hl7.framer import Hl7Framer
+from core.protocols.hl7.parser import Hl7Parser
 
 # Конфигурация протокола HL7 версии 1
 #
@@ -20,7 +19,7 @@ from core.protocols.config import ProtocolConfig
 #         builder=Accent320Builder,
 #     )
 HL7_V1 = ProtocolConfig(
-    framer=Hl7FramerV1,
-    parser=Hl7ParserV1,
+    framer=Hl7Framer,
+    parser=Hl7Parser,
     buffer=DefaultBuffer,
 )

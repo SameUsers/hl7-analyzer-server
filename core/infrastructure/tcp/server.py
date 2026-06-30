@@ -1,8 +1,9 @@
 import asyncio
 
+from loguru import logger
+
 from core.application.factories.handler_factory import create_handler
 from core.infrastructure.tcp.session import TCPSession
-from loguru import logger
 
 
 class TcpServer:
@@ -89,7 +90,9 @@ class TcpServer:
             RuntimeError: Если сервер уже был инициализирован
         """
         if self._server is not None:
-            raise RuntimeError(f"Server already initialized on {self._host}:{self._port}")
+            raise RuntimeError(
+                f"Server already initialized on {self._host}:{self._port}"
+            )
 
         self._server = await asyncio.start_server(
             self._handle_connection,

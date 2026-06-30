@@ -1,7 +1,8 @@
-from core.contracts.builder import BuilderInterface
-from core.devices.vet_5160.schema import Vet5160Result
-from core.protocols.hl7.message import HL7Message
 from loguru import logger
+
+from core.contracts.builder import BuilderInterface
+from core.devices.vet_5160.schema.schemas import Vet5160Result
+from core.protocols.hl7.message import HL7Message
 
 
 class Vet5160Builder(BuilderInterface):

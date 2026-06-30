@@ -8,6 +8,9 @@ dependencies = [
     "loguru>=0.7.3",
     "pydantic>=2.13.4",
     "pydantic-settings>=2.14.2",
+    "pydantic-settings-extra-sources>=0.1.0",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
 ]
 
 [build-system]
@@ -19,3 +22,97 @@ labaratory = "main:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["core"]
+
+[tool.ruff]
+target-version = "py312"
+extend-include = ["*.py"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    "venv",
+    "env",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "UP",
+    "B",
+    "SIM",
+]
+ignore = [
+    "E501",
+    "B008",
+    "B904",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101",
+    "F811",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["core"]
+combine-as-imports = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+disallow_untyped_defs = false
+disallow_any_unimported = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+pretty = true
+
+[[tool.mypy.overrides]]
+module = "core.*"
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--cov=core",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+source = ["core"]
+omit = ["tests/*", "*/__pycache__/*", "*.pyi"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if False:",
+]
+fail_under = 80
+show_missing = true
+skip_covered = false

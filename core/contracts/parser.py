@@ -45,4 +45,4 @@ class ParserInterface(ABC):
             >>> parsed.segments[0]  # Доступ к сегментам
             ['MSH', '^~\\&', '...']
         """
-        pass
+        ...

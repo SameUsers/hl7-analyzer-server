@@ -1,245 +1,371 @@
-# Labaratory
+# HL7 Analyzer Server
 
-Сервер для приема, обработки и сохранения результатов лабораторных анализов от медицинских анализаторов по протоколу HL7.
+> **Open-source asynchronous Python HL7 v2.x server for veterinary laboratory analyzers.**
+>
+> Receive HL7 messages over TCP/MLLP, parse laboratory results, normalize analyzer data, and export structured JSON for integration with Veterinary Information Systems (VIS), Laboratory Information Systems (LIS), databases, or REST APIs.
 
-[![Python Version](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+![Python](https://img.shields.io/badge/Python-3.13+-blue.svg)
+![License](https://img.shields.io/github/license/SameUsers/hl7-analyzer-server)
+![GitHub Stars](https://img.shields.io/github/stars/SameUsers/hl7-analyzer-server)
+![GitHub Issues](https://img.shields.io/github/issues/SameUsers/hl7-analyzer-server)
 
-## 🚀 Возможности
+---
 
-- **Прием данных** по TCP-протоколу от медицинских анализаторов
-- **Поддержка HL7** формата сообщений (версия 2.x)
-- **Автоматическое определение** типа анализатора по IP-адресу
-- **Парсинг и валидация** лабораторных результатов
-- **Сохранение** результатов в структурированном JSON-формате
-- **Поддержка** нескольких типов анализаторов:
-  - Accent M320 (биохимия)
-  - Vet 5160 (гематология)
-  - Seamaty SMT-120VP (многоканальный анализатор)
+## Overview
 
-## 📦 Установка
+HL7 Analyzer Server is an open-source Python framework for integrating **veterinary laboratory analyzers** using the **HL7 v2.x** protocol over **TCP/MLLP**.
 
-### Требования
+Many veterinary analyzers provide proprietary Windows-only software that is difficult to integrate into modern systems. This project provides a clean, extensible, and production-ready alternative for receiving laboratory results directly from analyzers.
 
-- Python 3.12 или выше
-- pip или uv
+The architecture is protocol-oriented, asynchronous, and designed to support multiple analyzer models with minimal changes.
 
-### Установка через uv (рекомендуется)
+---
 
-```bash
-# Установка uv (если еще не установлен)
-curl -LsSf https://astral.sh/uv/install.sh | sh
+## Supported Analyzers
 
-# Клонирование репозитория
-git clone https://github.com/yourusername/labaratory.git
-cd labaratory
+### Currently Supported
 
-# Установка зависимостей
-uv sync
+- ✅ Vet5160 Veterinary Hematology Analyzer
+- ✅ Accent M320
+- ✅ Seamaty SMT-120VP
+
+
+### Planned Support
+
+- Additional HL7-compatible veterinary analyzers
+
+---
+
+## Features
+
+- Asynchronous TCP Server (AsyncIO)
+- HL7 v2.x message processing
+- MLLP framing support
+- Automatic packet assembly
+- HL7 parser
+- Builder-based message processing
+- JSON export
+- Extensible architecture
+- Dependency Injection
+- Protocol-oriented interfaces
+- Immutable DTO models
+- Production-ready design
+- Python 3.13+
+
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        VETERINARY ANALYZER                        │
+│                     (Vet5160, Accent M320, etc.)                  │
+└────────────────────────────┬─────────────────────────────────────┘
+                             │
+                             │ HL7 v2.x over TCP/MLLP
+                             ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         TCP SERVER                                 │
+│              (AsyncIO, port 8001, multiple clients)                │
+└────────────────────────────┬─────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                           SESSION                                  │
+│              (Client connection, state management)                 │
+└────────────────────────────┬─────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                       PACKET DETECTOR                              │
+│               (MLLP framing, message boundaries)                   │
+└────────────────────────────┬─────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         HL7 PARSER                                 │
+│         (Segments: MSH, PID, OBR, OBX → Structured Data)          │
+└────────────────────────────┬─────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                           BUILDER                                  │
+│         (Normalize data → Analyzer-specific DTO)                  │
+└────────────────────────────┬─────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      ANALYZE RESULT DTO                            │
+│                   (Typed, validated Pydantic model)               │
+└────────────────────────────┬─────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         STORAGE LAYER                              │
+│                                                                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐            │
+│  │   JSON File  │  │  Database    │  │  REST API    │            │
+│  │   Storage    │  │  (PostgreSQL)│  │  Endpoint    │            │
+│  └──────────────┘  └──────────────┘  └──────────────┘            │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────┐         │
+│  │              Custom Storage Adapters                 │         │
+│  │         (Plugins, Extensions, Third-party)           │         │
+│  └──────────────────────────────────────────────────────┘         │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
-### Установка через pip
+---
 
-```bash
-# Клонирование репозитория
-git clone https://github.com/yourusername/labaratory.git
-cd labaratory
+## Data Flow
 
-# Создание виртуального окружения
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# или
-venv\Scripts\activate     # Windows
-
-# Установка зависимостей
-pip install -e .
+```
+Step 1: Analyzer sends HL7 message via TCP/MLLP
+        ↓
+Step 2: Server receives raw bytes
+        ↓
+Step 3: Detector extracts complete message using MLLP markers (0x0B ... 0x1C0D)
+        ↓
+Step 4: Parser converts HL7 string to structured segments
+        ↓
+Step 5: Builder normalizes data to device-specific format
+        ↓
+Step 6: Validation through Pydantic schema
+        ↓
+Step 7: Typed DTO (AnalyzeResult[T]) is created
+        ↓
+Step 8: Storage layer saves result to configured output
 ```
 
-## 🏃 Запуск
+---
 
-### Разработка
+## Directory Structure
+
+```
+hl7-analyzer-server/
+├── core/
+│   ├── application/          # Application layer
+│   │   ├── factories/        # Component factories
+│   │   └── handlers/         # Request handlers
+│   ├── contracts/            # Interfaces & abstract classes
+│   ├── devices/              # Device-specific implementations
+│   │   ├── accent_m320/      # Accent M320 biochemistry
+│   │   ├── seamaty_smt/      # Seamaty SMT-120VP
+│   │   └── vet_5160/         # Vet5160 hematology
+│   ├── infrastructure/       # Infrastructure layer
+│   │   ├── storage/          # Data storage
+│   │   └── tcp/              # TCP server & buffer
+│   ├── protocols/            # Protocol implementations
+│   │   └── hl7/              # HL7 protocol
+│   │       ├── framer.py     # Message framing
+│   │       ├── parser.py     # HL7 parsing
+│   │       └── segments/     # HL7 segment models
+│   ├── schemas/              # Pydantic data schemas
+│   └── shared/               # Shared utilities
+├── Analyze/                  # Default JSON output directory
+├── main.py                   # Entry point
+└── pyproject.toml           # Project configuration
+```
+
+---
+
+## Component Responsibilities
+
+| Component | Responsibility | Input → Output |
+|-----------|---------------|----------------|
+| **TCP Server** | Accept connections, manage clients | Bytes → Bytes |
+| **Session** | Manage client state | Connection → Session |
+| **Packet Detector** | Extract complete messages using MLLP | Stream → Complete Message |
+| **HL7 Parser** | Parse HL7 into structured data | String → HL7Message |
+| **Builder** | Normalize analyzer-specific data | HL7Message → Device DTO |
+| **Validator** | Validate data against schema | Device DTO → Validated DTO |
+| **Storage** | Save results to configured output | Validated DTO → File/DB/API |
+
+---
+
+## Key Design Patterns
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    DESIGN PATTERNS                         │
+├─────────────────────────────────────────────────────────────┤
+│  Factory  → Creates handlers and components                 │
+│  Builder  → Constructs analyzer results                    │
+│  Singleton → Shared resources (parser, framer, storage)    │
+│  Template → BaseHL7Builder with overridable methods        │
+│  Strategy → Pluggable storage backends                     │
+│  Observer → Event-driven processing                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Technology Stack
+
+```
+┌──────────────────┬──────────────────────────────────────────────┐
+│   Component      │   Technology                                 │
+├──────────────────┼──────────────────────────────────────────────┤
+│ Language         │ Python 3.12+                                │
+│ Runtime          │ AsyncIO                                     │
+│ Validation       │ Pydantic v2                                 │
+│ Logging          │ Loguru                                      │
+│ Serialization    │ JSON                                        │
+│ Package Manager  │ uv / pip                                    │
+│ Testing          │ pytest (planned)                            │
+│ Database         │ PostgreSQL (planned)                        │
+│ API              │ FastAPI (planned)                           │
+│ Containerization │ Docker (planned)                            │
+│ Monitoring       │ Prometheus + Grafana (planned)              │
+└──────────────────┴────────────────────────────────────────────
+```
+
+## Design Principles
+
+The project follows modern software engineering practices:
+
+- SOLID
+- Clean Architecture
+- Dependency Injection
+- Builder Pattern
+- Protocol-Oriented Programming
+- AsyncIO-first Design
+- Separation of Responsibilities
+- Extensibility by Composition
+
+---
+
+## Installation
 
 ```bash
+git clone https://github.com/SameUsers/hl7-analyzer-server.git
+
+cd hl7-analyzer-server
+
+pip install -r requirements.txt
+```
+---
+
+## Running
+```
 python main.py
 ```
+The server starts listening for incoming HL7 messages from compatible analyzers.
 
-### Production
+---
 
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8001
+## Example Workflow
+Analyzer
+    │
+    │ HL7 Message
+    ▼
+TCP Server
+    │
+    ▼
+Packet Detector
+    │
+    ▼
+Parser
+    │
+    ▼
+Builder
+    │
+    ▼
+AnalyzeResult DTO
+    │
+    ▼
+JSON / Database / API
+
+---
+
+## Example HL7 Message
 ```
-
-## 🏗️ Архитектура
-
+MSH|^~\&|Vet5160|LAB|VIS|SERVER|202606301200||ORU^R01|12345|P|2.3
+PID|||10001||DOG^Lucky
+OBR|1|||CBC
+OBX|1|NM|WBC||7.42|10^9/L
+OBX|2|NM|RBC||6.91|10^12/L
+OBX|3|NM|HGB||15.1|g/dL
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                         TCP Server                         │
-│                   (core/infrastructure/tcp)                │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      Handler Factory                       │
-│              (core/application/factories)                  │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Analyzer Handler                        │
-│              (core/application/handlers)                   │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-         ┌───────────────┼───────────────┐
-         ▼               ▼               ▼
-┌─────────────────┐ ┌──────────────┐ ┌──────────────────┐
-│  HL7 Framer     │ │  HL7 Parser  │ │    Builder       │
-│ (core/protocols)│ │(core/protocols)│ │  (core/devices)  │
-└─────────────────┘ └──────────────┘ └──────────────────┘
-                                                          │
-                                                          ▼
-                                          ┌─────────────────────────┐
-                                          │   Storage (SaveToJson)  │
-                                          │  (core/infrastructure)  │
-                                          └─────────────────────────┘
+---
+
+## Example JSON Output
 ```
-
-### Компоненты
-
-| Компонент | Описание |
-|-----------|----------|
-| **TCP Server** | Принимает входящие TCP-соединения от анализаторов |
-| **Handler Factory** | Создает обработчики на основе IP-адреса клиента |
-| **Analyzer Handler** | Управляет полным циклом обработки данных |
-| **HL7 Framer** | Выделяет HL7-сообщения из байтового потока |
-| **HL7 Parser** | Разбирает HL7-сообщения на сегменты |
-| **Builder** | Преобразует HL7-данные в структурированный результат |
-| **Storage** | Сохраняет результаты в JSON-файлы |
-
-## 📁 Структура проекта
-
-```
-labaratory/
-├── core/
-│   ├── application/          # Прикладной слой
-│   │   ├── factories/        # Фабрики для создания компонентов
-│   │   └── handlers/         # Обработчики данных
-│   ├── contracts/            # Интерфейсы и абстрактные классы
-│   ├── devices/              # Реализации для конкретных анализаторов
-│   │   ├── accent_m320/      # Accent M320
-│   │   ├── seamaty_smt/      # Seamaty SMT-120VP
-│   │   └── vet_5160/         # Vet 5160
-│   ├── infrastructure/       # Инфраструктурный слой
-│   │   ├── storage/          # Хранилище данных
-│   │   └── tcp/              # TCP-сервер и буфер
-│   ├── protocols/            # Реализации протоколов
-│   │   └── hl7/              # HL7 протокол
-│   ├── schemas/              # Pydantic схемы данных
-│   └── shared/               # Общие утилиты
-├── Analyze/                  # Директория с результатами (создается автоматически)
-├── main.py                   # Точка входа
-├── pyproject.toml           # Конфигурация проекта
-└── README.md                # Этот файл
-```
-
-## 🔧 Конфигурация
-
-### Добавление нового анализатора
-
-1. Создайте директорию в `core/devices/`:
-```bash
-core/devices/new_analyzer/
-```
-
-2. Создайте билдер:
-```python
-# core/devices/new_analyzer/builder.py
-from core.contracts.builder import BuilderInterface
-from core.protocols.hl7.message import HL7Message
-
-class NewAnalyzerBuilder(BuilderInterface):
-    def build_analyze(self, message: HL7Message) -> AnalyzeResult:
-        # Логика парсинга
-        pass
-```
-
-3. Добавьте схему данных:
-```python
-# core/devices/new_analyzer/schema.py
-from pydantic import BaseModel
-
-class NewAnalyzerResult(BaseModel):
-    # Поля результата
-    pass
-```
-
-4. Зарегистрируйте анализатор в `core/devices/registry.py`:
-```python
-DEVICE_REGISTRY = {
-    # ...
-    "192.168.1.100": DeviceProfile(
-        protocol=HL7_V1,
-        builder=NewAnalyzerBuilder,
-    ),
-}
-```
-
-## 📊 Формат сохранения
-
-Результаты сохраняются в структурированном виде:
-
-```
-Analyze/
-└── {analyzer_type}/
-    └── {YYYY-MM-DD}/
-        └── {YYYY-MM-DD-SS}-{analyzer_type}.json
-```
-
-Пример:
-```json
 {
-  "analyzer_name": "AccentM320",
-  "result": {
-    "analyze_type": "BAC",
-    "ALAT IIGEN": 25.5,
-    "GLUC": "5.6",
-    "CHOL": "4.2"
-  }
+  "device": "Vet5160",
+  "patient": {
+    "id": "10001",
+    "name": "Lucky"
+  },
+  "results": [
+    {
+      "code": "1001",
+      "name": "WBC",
+      "value": 7.42
+    },
+    {
+      "code": "1002",
+      "name": "RBC",
+      "value": 6.91
+    },
+    {
+      "code": "1003",
+      "name": "HGB",
+      "value": 15.1
+    }
+  ]
 }
 ```
+---
 
-## 🧪 Тестирование
+## Why This Project?
 
-```bash
-# Запуск всех тестов
-pytest
+There are many open-source HL7 libraries available, but very few focus specifically on veterinary laboratory analyzers.
 
-# Запуск с покрытием
-pytest --cov=core tests/
-```
+This project aims to become a modern, open, and extensible platform for integrating veterinary diagnostic equipment with custom software.
 
-## 📝 Логирование
+Whether you're building:
 
-Проект использует `loguru` для логирования. Логи выводятся в консоль с уровнем DEBUG и ERROR.
+- Veterinary Information Systems (VIS)
+- Laboratory Information Systems (LIS)
+- Clinic Management Software
+- Cloud Laboratory Platforms
+- Research Tools
 
-## 🤝 Вклад в проект
+this project provides a reliable foundation for receiving and processing HL7 messages.
 
-1. Форкните репозиторий
-2. Создайте ветку для вашей фичи (`git checkout -b feature/amazing-feature`)
-3. Зафиксируйте изменения (`git commit -m 'Add some amazing feature'`)
-4. Отправьте изменения в вашу ветку (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
+---
 
-## 📄 Лицензия
+## Roadmap
+- Support additional analyzers
+- HL7 ACK generation
+- ASTM protocol support
+- Automatic analyzer detection
+- YAML configuration
+- Database integrations
+- REST API
+- Docker image
+- Prometheus metrics
+- Grafana dashboards
+- Plugin system
+- Message validation
+- Retry and buffering
+- Multi-analyzer support
+- Unit and integration tests
 
-Этот проект распространяется под лицензией MIT. Подробности в файле [LICENSE](LICENSE).
+---
 
-## 📞 Контакты
+## Contributing
 
-- Автор: [Ваше имя]
-- Email: [ваш email]
+Contributions are welcome.
 
-## 🙏 Благодарности
+If you own another veterinary analyzer or would like to add support for additional devices, feel free to open an Issue or submit a Pull Request.
 
-- [Pydantic](https://github.com/pydantic/pydantic) - валидация данных
-- [Loguru](https://github.com/Delgan/loguru) - логирование
-- [uv](https://github.com/astral-sh/uv) - управление зависимостями
+Bug reports, feature requests, and architecture discussions are always appreciated.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---

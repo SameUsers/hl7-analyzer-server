@@ -6,6 +6,12 @@ dist/
 wheels/
 *.egg-info
 .vscode
+Analyze
+.coverage
+.env
+.ruff_cache
+.pytest_cache
+tests
 
 # Virtual environments
 .venv

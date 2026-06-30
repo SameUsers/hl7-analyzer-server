@@ -1,9 +1,10 @@
-from core.contracts.framer import FramerInterface
-from core.infrastructure.tcp.buffer import DefaultBuffer
 from loguru import logger
 
+from core.contracts.framer import FramerInterface
+from core.infrastructure.tcp.buffer import DefaultBuffer
 
-class Hl7FramerV1(FramerInterface):
+
+class Hl7Framer(FramerInterface):
     """
     Фреймер для выделения HL7-сообщений из потока данных (версия 1).
 

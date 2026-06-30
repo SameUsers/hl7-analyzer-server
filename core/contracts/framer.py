@@ -42,4 +42,4 @@ class FramerInterface(ABC):
             >>> message
             b'MSH|...'
         """
-        pass
+        ...

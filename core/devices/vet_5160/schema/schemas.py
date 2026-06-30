@@ -1,4 +1,4 @@
-from pydantic import Field, BaseModel
+from pydantic import BaseModel, Field
 
 from core.schemas.analyze_result import AnalyzeResult
 
@@ -60,7 +60,7 @@ class Vet5160OAKResult(BaseModel):
         }
     """
 
-    analyzer_type: str = Field(default="OAK")
+    analyze_type: str = Field(default="OAK")
     """Тип анализа - общий анализ крови (OAK)."""
 
     # Лейкоцитарная формула (проценты)

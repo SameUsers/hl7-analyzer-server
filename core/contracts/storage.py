@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from core.schemas.analyze_result import AnalyzeResult
 from loguru import logger
+
+from core.schemas.analyze_result import AnalyzeResult
 
 
 class StorageInterface(ABC):

@@ -1,5 +1,3 @@
-from typing import Optional
-
 from core.protocols.hl7.segments.hl7_segment import HL7Segment
 
 
@@ -68,22 +66,22 @@ class OBX(HL7Segment):
         '5.6'
     """
 
-    set_id: Optional[str] = None
-    value_type: Optional[str] = None
-    observation_identifier: Optional[str] = None
-    observation_sub_id: Optional[str] = None
-    observation_value: Optional[str] = None
-    units: Optional[str] = None
-    reference_range: Optional[str] = None
-    abnormal_flags: Optional[str] = None
-    probability: Optional[str] = None
-    nature_of_abnormal_test: Optional[str] = None
-    observation_result_status: Optional[str] = None
-    effective_date_of_reference_range: Optional[str] = None
-    user_defined_access_checks: Optional[str] = None
-    date_time_of_observation: Optional[str] = None
-    producers_id: Optional[str] = None
-    responsible_observer: Optional[str] = None
-    observation_method: Optional[str] = None
-    equipment_instance_identifier: Optional[str] = None
-    date_time_of_analysis: Optional[str] = None
+    set_id: str | None = None
+    value_type: str | None = None
+    observation_identifier: str | None = None
+    observation_sub_id: str | None = None
+    observation_value: str | None = None
+    units: str | None = None
+    reference_range: str | None = None
+    abnormal_flags: str | None = None
+    probability: str | None = None
+    nature_of_abnormal_test: str | None = None
+    observation_result_status: str | None = None
+    effective_date_of_reference_range: str | None = None
+    user_defined_access_checks: str | None = None
+    date_time_of_observation: str | None = None
+    producers_id: str | None = None
+    responsible_observer: str | None = None
+    observation_method: str | None = None
+    equipment_instance_identifier: str | None = None
+    date_time_of_analysis: str | None = None

@@ -1,11 +1,11 @@
-from typing import Generic, TypeVar
+from typing import TypeVar
 
 from pydantic import BaseModel
 
 T = TypeVar("T", bound=BaseModel)
 
 
-class AnalyzeResult(BaseModel, Generic[T]):
+class AnalyzeResult[T](BaseModel):
     """
     Результат анализа с типизированными данными.
 
