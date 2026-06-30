@@ -1,0 +1,47 @@
+from typing import Optional
+
+from core.protocols.hl7.segments.msh import MSH
+from core.protocols.hl7.segments.obr import OBR
+from core.protocols.hl7.segments.obx import OBX
+from core.protocols.hl7.segments.pid import PID
+from core.protocols.schema import ProtocolMessage
+
+
+class HL7Message(ProtocolMessage):
+    """
+    Структурированное представление HL7-сообщения.
+
+    Содержит все сегменты HL7-сообщения, разобранные по типам.
+    Используется для передачи данных между парсером и билдером.
+
+    Attributes:
+        protocol_type: Тип протокола (фиксированно "HL7V1")
+        msh: Сегмент MSH (Message Header) - обязательный
+        pid: Сегмент PID (Patient Identification) - опциональный
+        obr: Сегмент OBR (Observation Request) - опциональный
+        obx: Список сегментов OBX (Observation Result)
+
+    Example:
+        >>> msg = HL7Message(
+        ...     protocol_type="HL7V1",
+        ...     msh=MSH(....),
+        ...     pid=PID(...),
+        ...     obr=OBR(...),
+        ...     obx=[OBX(...), OBX(...)],
+        ... )
+    """
+
+    protocol_type: str = "HL7V1"
+    """Тип протокола - HL7 версии 1."""
+
+    msh: MSH
+    """Сегмент заголовка сообщения (Message Header)."""
+
+    pid: Optional[PID] = None
+    """Сегмент идентификации пациента (Patient Identification)."""
+
+    obr: Optional[OBR] = None
+    """Сегмент запроса на исследование (Observation Request)."""
+
+    obx: list[OBX] = []
+    """Список сегментов результатов исследований (Observation Result)."""

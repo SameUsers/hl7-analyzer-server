@@ -1,0 +1,144 @@
+import asyncio
+
+from core.application.factories.handler_factory import create_handler
+from core.infrastructure.tcp.session import TCPSession
+from loguru import logger
+
+
+class TcpServer:
+    """
+    TCP-сервер для приема и обработки сообщений от анализаторов.
+
+    Сервер принимает входящие TCP-подключения, создает для каждого клиента
+    сессию и обрабатывает получаемые данные с помощью соответствующего
+    обработчика, определяемого по IP-адресу клиента.
+
+    Attributes:
+        _host (str): Адрес, на котором запущен сервер
+        _port (int): Порт, на котором запущен сервер
+        _server (asyncio.Server | None): Объект ASGI-сервера
+    """
+
+    def __init__(self, host: str, port: int) -> None:
+        """
+        Инициализация TCP-сервера.
+
+        Args:
+            host: IP-адрес или имя хоста для привязки сервера
+            port: Номер порта для привязки сервера
+        """
+        self._port = port
+        self._host = host
+        self._server: asyncio.Server | None = None
+        logger.debug("Created {} with host={}, port={}", self, host, port)
+
+    async def _handle_connection(
+        self,
+        reader: asyncio.StreamReader,
+        writer: asyncio.StreamWriter,
+    ) -> None:
+        """
+        Обрабатывает входящее клиентское подключение.
+
+        Создает сессию для клиента, определяет обработчик по IP-адресу
+        и обрабатывает все входящие данные до закрытия соединения.
+
+        Args:
+            reader: Объект для чтения данных из сокета
+            writer: Объект для записи данных в сокет
+
+        Raises:
+            Exception: Пробрасывает любые ошибки обработки данных
+                       (TODO: заменить на конкретные типы исключений)
+        """
+        client_host, client_port = writer.get_extra_info("peername")
+
+        # Создаем обработчик для конкретного клиента
+        session_handler = create_handler(host=client_host)
+        session = TCPSession(
+            client_host=client_host,
+            client_port=client_port,
+            handler=session_handler,
+        )
+
+        while True:
+            chunk = await reader.read(4096)
+            if not chunk:
+                break
+
+            try:
+                await session.handle(chunk=chunk)
+            except Exception as e:
+                # TODO: Заменить на конкретную обработку ошибок
+                # Возможные ошибки: ValidationError, ConnectionError, etc.
+                logger.error(
+                    "Error processing data from {}:{} - {}",
+                    client_host,
+                    client_port,
+                    e,
+                )
+                raise e from e
+
+    async def initialize(self) -> None:
+        """
+        Инициализирует TCP-сервер.
+
+        Создает ASGI-сервер и привязывает его к указанным хосту и порту.
+
+        Raises:
+            RuntimeError: Если сервер уже был инициализирован
+        """
+        if self._server is not None:
+            raise RuntimeError(f"Server already initialized on {self._host}:{self._port}")
+
+        self._server = await asyncio.start_server(
+            self._handle_connection,
+            port=self.port,
+            host=self.host,
+        )
+        logger.info("Server initialized on {}:{}", self._host, self._port)
+
+    async def run(self) -> None:
+        """
+        Запускает сервер и начинает обработку входящих соединений.
+
+        Блокирует выполнение до остановки сервера.
+
+        Raises:
+            RuntimeError: Если сервер не был инициализирован
+        """
+        if self._server is None:
+            raise RuntimeError("Server is not initialized, call initialize() first")
+
+        logger.info("Server started on {}:{}", self._host, self._port)
+        async with self._server:
+            await self._server.serve_forever()
+
+    async def stop(self) -> None:
+        """
+        Останавливает сервер и закрывает все активные соединения.
+        """
+        if self._server is None:
+            logger.warning("Server already stopped or not initialized")
+            return
+
+        logger.info("Stopping server on {}:{}", self._host, self._port)
+        self._server.close()
+        await self._server.wait_closed()
+        self._server = None
+        logger.info("Server stopped")
+
+    @property
+    def port(self) -> int:
+        """Возвращает порт, на котором запущен сервер."""
+        return self._port
+
+    @property
+    def host(self) -> str:
+        """Возвращает хост, на котором запущен сервер."""
+        return self._host
+
+    @property
+    def server(self) -> asyncio.Server | None:
+        """Возвращает объект ASGI-сервера или None, если сервер не запущен."""
+        return self._server
