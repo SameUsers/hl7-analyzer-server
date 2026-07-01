@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from core.schemas.analyze_result import AnalyzeResult
+from core.domain.analyze_result import AnalyzeResult
 
 
 class Vet5160OAKResult(BaseModel):
@@ -135,4 +135,3 @@ class Vet5160Result(AnalyzeResult[Vet5160OAKResult]):
     """
 
     analyzer_name: str = "5160Vet"
-    """Название гематологического анализатора Vet 5160."""

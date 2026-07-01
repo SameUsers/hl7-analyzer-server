@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from core.schemas.analyze_result import AnalyzeResult
+from core.domain.analyze_result import AnalyzeResult
 
 
 class AccentM320BACResult(BaseModel):
@@ -74,4 +74,5 @@ class AccentM320Result(AnalyzeResult[AccentM320BACResult]):
     Является специализированной версией AnalyzeResult с фиксированным
     именем анализатора и типом результата.
     """
+
     analyzer_name: str = "AccentM320"

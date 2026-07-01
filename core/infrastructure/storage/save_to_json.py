@@ -4,7 +4,7 @@ from pathlib import Path
 from loguru import logger
 
 from core.contracts.storage import StorageInterface
-from core.schemas.analyze_result import AnalyzeResult
+from core.domain.analyze_result import AnalyzeResult
 from core.shared.path import build_analyze_path
 
 
@@ -34,7 +34,7 @@ class SaveToJson(StorageInterface):
 
     def __init__(
         self,
-        save_dir: Path = Path(__file__).resolve().parents[3] / "Analyze",
+        save_dir: Path | None = None,
     ) -> None:
         """
         Инициализация хранилища.
@@ -69,7 +69,7 @@ class SaveToJson(StorageInterface):
         # Записываем данные в файл
         with save_path.open("w", encoding="utf-8") as file:
             json.dump(
-                self._model_to_json(message),
+                self._model_to_dict(message),
                 file,
                 ensure_ascii=False,
                 indent=2,

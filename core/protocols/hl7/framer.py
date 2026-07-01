@@ -44,28 +44,19 @@ class Hl7Framer(FramerInterface):
         Ищет маркеры начала и конца сообщения. Если оба найдены,
         извлекает сообщение без маркеров и удаляет его из буфера.
         """
-        # Ищем маркеры начала и конца
         start = buffer.find(self.START_BLOCK)
         end = buffer.find(self.END_BLOCK)
-
-        # Если маркеры не найдены - сообщение не полное
         if start == -1 or end == -1:
             return None
-
-        # Извлекаем сообщение без маркеров
         message = buffer.extract(
             start + len(self.START_BLOCK),
             end,
         )
-
-        # Удаляем из буфера обработанные данные (включая маркеры)
         buffer.remove_until(end + len(self.END_BLOCK))
-
         logger.debug(
             "Extracted HL7 message of {} bytes from buffer",
             len(message),
         )
-
         return message
 
     def __del__(self) -> None:

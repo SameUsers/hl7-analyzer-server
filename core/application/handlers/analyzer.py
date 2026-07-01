@@ -6,20 +6,19 @@ from core.contracts.handler import HandlerInterface
 from core.contracts.parser import ParserInterface
 from core.contracts.storage import StorageInterface
 from core.infrastructure.tcp.buffer import DefaultBuffer
-from core.schemas.analyze_result import AnalyzeResult
+from core.domain.analyze_result import AnalyzeResult
 from core.shared.decoder import decode_message
 
 
 class AnalyzerHandler(HandlerInterface):
     """
-    Обработчик данных от анализатора.
-
+    Обработчик данных от анализаторов.
     Реализует полный цикл обработки входящих данных:
     1. Накопление данных в буфере
     2. Извлечение сообщений с помощью фреймера
     3. Декодирование и парсинг сообщений
     4. Построение структурированного результата
-    5. Сохранение результата (опционально)
+    5. Сохранение результата (опционально) по умолчанию в JSON
     """
 
     def __init__(

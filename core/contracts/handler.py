@@ -5,7 +5,7 @@ from loguru import logger
 
 from core.contracts.storage import StorageInterface
 from core.infrastructure.storage.save_to_json import SaveToJson
-from core.schemas.analyze_result import AnalyzeResult
+from core.domain.analyze_result import AnalyzeResult
 
 
 class HandlerInterface(ABC):

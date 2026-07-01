@@ -1,20 +1,17 @@
-from core.application.factories.component_factory import ComponentFactory
-from core.devices.registry import DEVICE_REGISTRY
+from core.application.handlers.analyzer import AnalyzerHandler
+from core.contracts.handler import HandlerInterface
+from core.devices.profile import DeviceProfile
 
 
-def create_handler(host: str):
-    """
-    Создает обработчик для анализатора по его IP-адресу.
-    Фабричная функция, которая по IP-адресу клиента определяет тип анализатора,
-    получает его конфигурацию из реестра устройств и делегирует создание
-    обработчика фабрике компонентов.
-    """
-    device_configuration = DEVICE_REGISTRY.get(host)
+class HandlerFactory:
 
-    if device_configuration is None:
-        raise RuntimeError(
-            f"Unknown analyzer for host: {host}. "
-            f"Available hosts: {list(DEVICE_REGISTRY.keys())}"
-        )
+    @staticmethod
+    def create_handler(config: DeviceProfile) -> HandlerInterface:
+        protocol = config.protocol
+        return AnalyzerHandler(
+            builder=config.builder(),
+            parser=protocol.parser(),
+            framer=protocol.framer(),
+            buffer=protocol.buffer())
 
-    return ComponentFactory.create_handler(device_configuration)
+handler_factory = HandlerFactory()
