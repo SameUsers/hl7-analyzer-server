@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from core.contracts.builder import BuilderInterface
+from core.devices.enums import DeviceTypeEnum
 from core.protocols.core.config import ProtocolConfig
 
 
@@ -12,6 +13,7 @@ class DeviceProfile:
     с конкретным анализатором. Используется фабриками для создания
     обработчиков.
     """
+    device_type: DeviceTypeEnum
     device_ip: str
     protocol: ProtocolConfig
     builder: type[BuilderInterface]

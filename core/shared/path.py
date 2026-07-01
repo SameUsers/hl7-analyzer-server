@@ -18,7 +18,7 @@ def build_analyze_filename(
     Имя файла строится по шаблону: YYYY-MM-DD-SS-{analyzer_type}
     """
     dt = dt or current_datetime()
-    return f"{dt:%Y-%m-%d-%S}-{analyzer_type}"
+    return f"{dt:%Y-%m-%d-%H:%M}-{analyzer_type}"
 
 
 def build_analyze_directory(

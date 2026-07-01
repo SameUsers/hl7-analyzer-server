@@ -1,16 +1,15 @@
 import asyncio
 
+from core.application.factories.device_registry import registry_device
 from core.infrastructure.config.config import settings
 from core.infrastructure.tcp.server import TcpServer
-from core.boot.device_registry import registry_device
 
 
 async def main() -> None:
-    devices_configs = settings.devices
+    devices_configs = settings.devices#Забрал девайся из ямла
+
     for device in devices_configs:
-        registry_device.register(device=device)
-    
-    print(registry_device._device_registry)
+        registry_device.register(device=device)#Заргеал
 
     server = TcpServer(
         port=settings.server.port,

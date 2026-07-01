@@ -4,6 +4,9 @@ from pydantic import BaseModel
 from pydantic_settings import SettingsConfigDict
 from pydantic_settings_sources import YamlEnvSettings
 
+from core.devices.enums import DeviceBuilderEnum, DeviceTypeEnum
+from core.protocols.core.enums import ProtocolEnum
+
 
 class TCPServerConfig(BaseModel):
     host: str
@@ -16,9 +19,10 @@ class StorageConfig(BaseModel):
 
 
 class DeviceConfig(BaseModel):
+    device_type: DeviceTypeEnum
     device_ip: str
-    protocol: str
-    device_name: str
+    protocol: ProtocolEnum
+    device_name: DeviceBuilderEnum
 
 
 class Settings(YamlEnvSettings):
