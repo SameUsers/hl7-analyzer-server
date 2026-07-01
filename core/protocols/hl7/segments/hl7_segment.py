@@ -19,8 +19,6 @@ class HL7Segment(BaseModel):
         Создает объект сегмента из списка значений полей.
         """
         fields = list(cls.model_fields)
-
-        # Сопоставляем поля со значениями
         field_values = {}
         for i, field_name in enumerate(fields):
             if i < len(values):

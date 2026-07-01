@@ -1,5 +1,5 @@
 from core.application.handlers.analyzer import AnalyzerHandler
-from core.devices.registry import DeviceProfile
+from core.devices.core.profile import DeviceProfile
 
 
 class ComponentFactory:
@@ -28,3 +28,5 @@ class ComponentFactory:
             framer=protocol.framer(),
             buffer=protocol.buffer(),
         )
+
+create_handler = ComponentFactory()

@@ -135,4 +135,3 @@ class Vet5160Result(AnalyzeResult[Vet5160OAKResult]):
     """
 
     analyzer_name: str = "5160Vet"
-    """Название гематологического анализатора Vet 5160."""

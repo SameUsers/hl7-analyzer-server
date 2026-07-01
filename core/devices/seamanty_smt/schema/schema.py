@@ -205,6 +205,7 @@ class BrownSchema(BaseModel):
 # Тип для объединения всех схем Seamaty
 SeamatyResultData = RedSchema | PinkSchema | YellowSchema | GreenSchema | BrownSchema
 
+
 class SeamantyResult(AnalyzeResult[SeamatyResultData]):
     """
     Результат анализа для анализатора Seamaty SMT-120VP.
@@ -215,4 +216,5 @@ class SeamantyResult(AnalyzeResult[SeamatyResultData]):
     - GREEN: Биохимия (расширенная)
     - BROWN: Биохимия (полная)
     """
+
     analyzer_name: str = "Seamanty"

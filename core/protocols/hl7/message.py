@@ -1,8 +1,8 @@
+from core.protocols.core.schema import ProtocolMessage
 from core.protocols.hl7.segments.msh import MSH
 from core.protocols.hl7.segments.obr import OBR
 from core.protocols.hl7.segments.obx import OBX
 from core.protocols.hl7.segments.pid import PID
-from core.protocols.schema import ProtocolMessage
 
 
 class HL7Message(ProtocolMessage):

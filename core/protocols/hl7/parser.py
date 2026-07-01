@@ -74,12 +74,10 @@ class Hl7Parser(ParserInterface):
         Разбирает HL7-сообщение в структурированный объект.
         """
         rows = self._extract_rows(message)
-
         msh = None
         pid = None
         obr = None
         obx_list = []
-
         for row in rows:
             fields = self._extract_fields(row)
             if not fields:

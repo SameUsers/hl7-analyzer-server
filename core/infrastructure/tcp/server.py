@@ -2,7 +2,8 @@ import asyncio
 
 from loguru import logger
 
-from core.application.factories.handler_factory import create_handler
+from core.application.factories.component_factory import create_handler
+from core.boot.device_registry import registry_device
 from core.infrastructure.tcp.session import TCPSession
 
 
@@ -14,14 +15,21 @@ class TcpServer:
     обработчика, определяемого по IP-адресу клиента.
     """
 
-    def __init__(self, host: str, port: int) -> None:
+    def __init__(self, host: str, port: int, read_size: int = 4096,) -> None:
         """
         Инициализация TCP-сервера.
         """
         self._port = port
         self._host = host
+        self._read_size = read_size
         self._server: asyncio.Server | None = None
-        logger.debug("Created {} with host={}, port={}", self, host, port)
+        logger.debug(
+            "Created {} with host={}, port={}, read_size={}",
+            self,
+            host,
+            port,
+            read_size,
+        )
 
     async def _handle_connection(
         self,
@@ -37,7 +45,7 @@ class TcpServer:
         client_host, client_port = writer.get_extra_info("peername")
 
         # Создаем обработчик для конкретного клиента
-        session_handler = create_handler(host=client_host)
+        session_handler = create_handler.create_handler(registry_device.get_device(client_host))
         session = TCPSession(
             client_host=client_host,
             client_port=client_port,
@@ -45,15 +53,13 @@ class TcpServer:
         )
 
         while True:
-            chunk = await reader.read(4096)
+            chunk = await reader.read(self._read_size)
             if not chunk:
                 break
-
             try:
                 await session.handle(chunk=chunk)
             except Exception as e:
                 # TODO: Заменить на конкретную обработку ошибок
-                # Возможные ошибки: ValidationError, ConnectionError, etc.
                 logger.error(
                     "Error processing data from {}:{} - {}",
                     client_host,
@@ -114,6 +120,10 @@ class TcpServer:
     def host(self) -> str:
         """Возвращает хост, на котором запущен сервер."""
         return self._host
+
+    @property
+    def read_size(self) -> int:
+        return self._read_size
 
     @property
     def server(self) -> asyncio.Server | None:

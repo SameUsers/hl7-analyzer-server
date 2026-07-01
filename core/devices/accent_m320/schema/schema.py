@@ -74,4 +74,5 @@ class AccentM320Result(AnalyzeResult[AccentM320BACResult]):
     Является специализированной версией AnalyzeResult с фиксированным
     именем анализатора и типом результата.
     """
+
     analyzer_name: str = "AccentM320"
