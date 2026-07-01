@@ -82,18 +82,12 @@ class DefaultBuffer:
     def buffer(self) -> bytearray:
         """
         Возвращает внутренний буфер.
-
-        Returns:
-            bytearray: Ссылка на внутренний буфер
         """
         return self._buffer
 
     def __len__(self) -> int:
         """
         Возвращает текущий размер буфера.
-
-        Returns:
-            int: Количество байт в буфере
         """
         return len(self._buffer)
 

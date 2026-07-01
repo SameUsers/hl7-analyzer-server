@@ -11,20 +11,14 @@ from core.shared.path import build_analyze_path
 class SaveToJson(StorageInterface):
     """
     Хранилище для сохранения результатов анализа в JSON-файлы.
-
     Реализует сохранение результатов работы анализаторов в формате JSON.
     Использует паттерн Синглтон для обеспечения единого экземпляра
     хранилища во всем приложении.
-
     Файлы сохраняются в структурированную директорию:
         Analyze/
             └── {analyzer_type}/
                 └── {year}-{month}-{day}/
                     └── {timestamp}-{analyzer_type}.json
-
-    Attributes:
-        _save_dir (Path): Корневая директория для сохранения
-        _initialized (bool): Флаг инициализации синглтона
     """
 
     _instance = None
@@ -33,9 +27,6 @@ class SaveToJson(StorageInterface):
     def __new__(cls):
         """
         Создает или возвращает существующий экземпляр синглтона.
-
-        Returns:
-            SaveToJson: Единственный экземпляр класса
         """
         if cls._instance is None:
             cls._instance = super().__new__(cls)
@@ -47,10 +38,6 @@ class SaveToJson(StorageInterface):
     ) -> None:
         """
         Инициализация хранилища.
-
-        Args:
-            save_dir: Корневая директория для сохранения файлов.
-                     По умолчанию: ./Analyze (относительно корня проекта)
         """
         if self._initialized:
             return
