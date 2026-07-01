@@ -9,24 +9,14 @@ from core.infrastructure.tcp.session import TCPSession
 class TcpServer:
     """
     TCP-сервер для приема и обработки сообщений от анализаторов.
-
     Сервер принимает входящие TCP-подключения, создает для каждого клиента
     сессию и обрабатывает получаемые данные с помощью соответствующего
     обработчика, определяемого по IP-адресу клиента.
-
-    Attributes:
-        _host (str): Адрес, на котором запущен сервер
-        _port (int): Порт, на котором запущен сервер
-        _server (asyncio.Server | None): Объект ASGI-сервера
     """
 
     def __init__(self, host: str, port: int) -> None:
         """
         Инициализация TCP-сервера.
-
-        Args:
-            host: IP-адрес или имя хоста для привязки сервера
-            port: Номер порта для привязки сервера
         """
         self._port = port
         self._host = host
@@ -40,17 +30,9 @@ class TcpServer:
     ) -> None:
         """
         Обрабатывает входящее клиентское подключение.
-
         Создает сессию для клиента, определяет обработчик по IP-адресу
         и обрабатывает все входящие данные до закрытия соединения.
-
-        Args:
-            reader: Объект для чтения данных из сокета
-            writer: Объект для записи данных в сокет
-
-        Raises:
-            Exception: Пробрасывает любые ошибки обработки данных
-                       (TODO: заменить на конкретные типы исключений)
+        (TODO: заменить на конкретные типы исключений)
         """
         client_host, client_port = writer.get_extra_info("peername")
 
@@ -83,11 +65,7 @@ class TcpServer:
     async def initialize(self) -> None:
         """
         Инициализирует TCP-сервер.
-
         Создает ASGI-сервер и привязывает его к указанным хосту и порту.
-
-        Raises:
-            RuntimeError: Если сервер уже был инициализирован
         """
         if self._server is not None:
             raise RuntimeError(
@@ -104,11 +82,7 @@ class TcpServer:
     async def run(self) -> None:
         """
         Запускает сервер и начинает обработку входящих соединений.
-
         Блокирует выполнение до остановки сервера.
-
-        Raises:
-            RuntimeError: Если сервер не был инициализирован
         """
         if self._server is None:
             raise RuntimeError("Server is not initialized, call initialize() first")

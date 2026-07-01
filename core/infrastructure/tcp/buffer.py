@@ -4,16 +4,10 @@ from loguru import logger
 class DefaultBuffer:
     """
     Буфер для временного хранения входящих данных.
-
     Реализует накопительный буфер с ограничением максимального размера.
     Поддерживает операции поиска, извлечения и очистки данных.
-
     Используется для накопления данных из TCP-потока перед выделением
     полных сообщений с помощью фреймера.
-
-    Attributes:
-        _buffer (bytearray): Внутренний буфер для хранения данных
-        _max_size (int): Максимальный размер буфера в байтах
     """
 
     def __init__(self, max_size: int = 10 * 1024 * 1024) -> None:
@@ -31,13 +25,6 @@ class DefaultBuffer:
     def append(self, chunk: bytes) -> None:
         """
         Добавляет данные в буфер.
-
-        Args:
-            chunk: Байтовые данные для добавления
-
-        Raises:
-            RuntimeError: Если добавление данных превысит максимальный размер
-                          буфера
         """
         if len(self._buffer) + len(chunk) > self._max_size:
             raise RuntimeError(
@@ -56,29 +43,12 @@ class DefaultBuffer:
     def find(self, target: bytes, start: int = 0) -> int:
         """
         Ищет последовательность байтов в буфере.
-
-        Args:
-            target: Последовательность байтов для поиска
-            start: Индекс, с которого начинать поиск
-
-        Returns:
-            int: Индекс первого вхождения или -1, если не найдено
         """
         return self._buffer.find(target, start)
 
     def extract(self, start: int, end: int) -> bytes:
         """
         Извлекает фрагмент данных из буфера.
-
-        Args:
-            start: Начальный индекс включительно
-            end: Конечный индекс исключительно
-
-        Returns:
-            bytes: Извлеченные данные
-
-        Raises:
-            IndexError: Если индексы выходят за пределы буфера
         """
         return bytes(self._buffer[start:end])
 
@@ -90,12 +60,9 @@ class DefaultBuffer:
     def remove_until(self, end: int) -> None:
         """
         Удаляет данные из буфера до указанной позиции.
-
         Используется после извлечения сообщения для удаления
         обработанных данных.
 
-        Args:
-            end: Индекс, до которого удалять данные (исключительно)
         """
         if end > 0 and end <= len(self._buffer):
             del self._buffer[:end]

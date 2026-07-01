@@ -11,22 +11,6 @@ class HL7Message(ProtocolMessage):
 
     Содержит все сегменты HL7-сообщения, разобранные по типам.
     Используется для передачи данных между парсером и билдером.
-
-    Attributes:
-        protocol_type: Тип протокола (фиксированно "HL7V1")
-        msh: Сегмент MSH (Message Header) - обязательный
-        pid: Сегмент PID (Patient Identification) - опциональный
-        obr: Сегмент OBR (Observation Request) - опциональный
-        obx: Список сегментов OBX (Observation Result)
-
-    Example:
-        >>> msg = HL7Message(
-        ...     protocol_type="HL7V1",
-        ...     msh=MSH(....),
-        ...     pid=PID(...),
-        ...     obr=OBR(...),
-        ...     obx=[OBX(...), OBX(...)],
-        ... )
     """
 
     protocol_type: str = "HL7V1"

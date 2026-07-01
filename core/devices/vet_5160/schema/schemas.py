@@ -40,24 +40,6 @@ class Vet5160OAKResult(BaseModel):
         plateletcrit: Тромбокрит (PCT)
         platelet_large_cell_ratio: Отношение крупных тромбоцитов (P_LCR)
         platelet_large_cell_count: Количество крупных тромбоцитов (P_LCC)
-
-    Example:
-        >>> oak = Vet5160OAKResult(
-        ...     analyzer_type="OAK",
-        ...     wbc=7.5,
-        ...     rbc=5.2,
-        ...     hemoglobin=140.0,
-        ...     platelets=250.0,
-        ... )
-        >>> oak.model_dump(by_alias=True)
-        {
-            'analyzer_type': 'OAK',
-            'WBC': 7.5,
-            'RBC': 5.2,
-            'HGB': 140.0,
-            'PLT': 250.0,
-            ...
-        }
     """
 
     analyze_type: str = Field(default="OAK")
@@ -148,21 +130,8 @@ class Vet5160OAKResult(BaseModel):
 class Vet5160Result(AnalyzeResult[Vet5160OAKResult]):
     """
     Результат анализа для гематологического анализатора Vet 5160.
-
     Является специализированной версией AnalyzeResult с фиксированным
     именем анализатора и типом результата (OAK).
-
-    Attributes:
-        analyzer_name: Название анализатора ("5160Vet")
-        result: Данные результата (Vet5160OAKResult)
-
-    Example:
-        >>> oak_result = Vet5160OAKResult(wbc=7.5, rbc=5.2, hemoglobin=140.0)
-        >>> result = Vet5160Result(result=oak_result)
-        >>> result.analyzer_name
-        '5160Vet'
-        >>> result.result.wbc
-        7.5
     """
 
     analyzer_name: str = "5160Vet"

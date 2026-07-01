@@ -8,42 +8,8 @@ from core.protocols.hl7.segments.hl7_segment import HL7Segment
 class PID(HL7Segment):
     """
     HL7-сегмент PID (Patient Identification).
-
     Содержит демографическую информацию о пациенте, включая идентификаторы,
     имя, дату рождения, пол, адрес, контактные данные и другую информацию.
-
-    Поля соответствуют стандарту HL7 версии 2.x:
-    - PID.1  - ID набора (Set ID)
-    - PID.2  - ID пациента (Patient ID)
-    - PID.3  - Список идентификаторов пациента
-    - PID.4  - Альтернативный ID пациента
-    - PID.5  - Имя пациента (Patient Name)
-    - PID.6  - Девичья фамилия матери
-    - PID.7  - Дата/время рождения
-    - PID.8  - Пол (Administrative Sex)
-    - PID.9  - Псевдоним пациента (Patient Alias)
-    - PID.10 - Раса (Race)
-    - PID.11 - Адрес пациента (Patient Address)
-    - PID.12 - Код округа
-    - PID.13 - Номер телефона (дом)
-    - PID.14 - Номер телефона (работа)
-    - PID.15 - Основной язык
-    - PID.16 - Семейное положение (Marital Status)
-    - PID.17 - Религия (Religion)
-    - PID.18 - Номер счета пациента
-    - PID.19 - Номер SSN
-    - PID.20 - Номер водительских прав
-    - PID.21 - Идентификатор матери
-    - PID.22 - Этническая группа (Ethnic Group)
-    - PID.23 - Место рождения
-    - PID.24 - Признак многоплодной беременности
-    - PID.25 - Порядок рождения
-    - PID.26 - Гражданство (Citizenship)
-    - PID.27 - Военный статус ветерана
-    - PID.28 - Национальность (Nationality)
-    - PID.29 - Дата/время смерти пациента
-    - PID.30 - Признак смерти пациента
-
     Attributes:
         set_id: ID набора (PID.1)
         patient_id: ID пациента (PID.2)
@@ -75,22 +41,6 @@ class PID(HL7Segment):
         nationality: Национальность (PID.28)
         patient_death_date_time: Дата смерти (PID.29)
         patient_death_indicator: Признак смерти (PID.30)
-
-    Example:
-        >>> pid = PID.from_values([
-        ...     "1",
-        ...     "12345",
-        ...     "PID123^MRN^HOSP",
-        ...     "",
-        ...     "Doe^John^A",
-        ...     "",
-        ...     "19800101",
-        ...     "M",
-        ... ])
-        >>> pid.patient_name
-        'Doe^John^A'
-        >>> pid.administrative_sex
-        'M'
     """
 
     set_id: Any | None = Field(default=None)

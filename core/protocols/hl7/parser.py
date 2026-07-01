@@ -11,18 +11,13 @@ from core.protocols.hl7.segments.pid import PID
 class Hl7Parser(ParserInterface):
     """
     Парсер HL7-сообщений (версия 1).
-
     Преобразует текстовое HL7-сообщение в структурированный объект HL7Message.
     Разбивает сообщение на сегменты, парсит каждый сегмент и собирает
     их в единую структуру.
-
     Особенности:
     - Поддерживает сегменты: MSH, PID, OBR, OBX
     - Игнорирует неизвестные сегменты
     - Работает как синглтон
-
-    Attributes:
-        _segment_map (dict): Словарь соответствия имен сегментов их классам
     """
 
     _instance = None
@@ -31,9 +26,6 @@ class Hl7Parser(ParserInterface):
     def __new__(cls):
         """
         Создает или возвращает существующий экземпляр синглтона.
-
-        Returns:
-            Hl7ParserV1: Единственный экземпляр класса
         """
         if cls._instance is None:
             cls._instance = super().__new__(cls)
@@ -57,37 +49,18 @@ class Hl7Parser(ParserInterface):
     def _extract_rows(self, message: str) -> list[str]:
         """
         Разбивает сообщение на строки-сегменты.
-
-        Args:
-            message: Текстовое HL7-сообщение
-
-        Returns:
-            list[str]: Список сегментов-строк
         """
         return [row for row in message.replace("\r", "\n").split("\n") if row]
 
     def _extract_fields(self, row: str) -> list[str]:
         """
         Разбивает строку сегмента на поля.
-
-        Args:
-            row: Строка сегмента
-
-        Returns:
-            list[str]: Список полей сегмента
         """
         return row.split("|")
 
     def _build_segment(self, segment_name: str, values: list[str]) -> object | None:
         """
         Создает объект сегмента из значений.
-
-        Args:
-            segment_name: Имя сегмента (например, "MSH", "PID")
-            values: Список значений полей сегмента
-
-        Returns:
-            Optional[object]: Объект сегмента или None, если сегмент неизвестен
         """
         segment_cls = self._segment_map.get(segment_name)
         if segment_cls is None:
@@ -99,21 +72,6 @@ class Hl7Parser(ParserInterface):
     def process_message(self, message: str) -> HL7Message:
         """
         Разбирает HL7-сообщение в структурированный объект.
-
-        Args:
-            message: Текстовое HL7-сообщение
-
-        Returns:
-            HL7Message: Структурированное представление сообщения
-
-        Raises:
-            ValueError: Если в сообщении отсутствует обязательный сегмент MSH
-
-        Example:
-            >>> parser = Hl7Parser()
-            >>> msg = "MSH|^~\\\\&|...\\rOBX|1|NM|..."
-            >>> parsed = parser.process_message(msg)
-            >>> parsed.msh  # Сегмент MSH
         """
         rows = self._extract_rows(message)
 

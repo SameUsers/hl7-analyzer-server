@@ -9,17 +9,9 @@ from core.shared.rounder import rounder
 class Accent320Builder(BuilderInterface):
     """
     Билдер для анализатора Accent M320.
-
     Преобразует HL7-сообщение в структурированный результат анализа.
     Извлекает значения из OBX-сегментов, используя Observation Sub-ID
     в качестве ключей для сопоставления с полями результата.
-
-    Пример:
-        >>> builder = Accent320Builder()
-        >>> message = HL7Message(...)
-        >>> result = builder.build_analyze(message)
-        >>> print(result.result.glucose)
-        '5.6'
     """
 
     def __init__(self) -> None:
@@ -29,27 +21,8 @@ class Accent320Builder(BuilderInterface):
     def build_analyze(self, message: HL7Message) -> AccentM320Result:
         """
         Строит структурированный результат из HL7-сообщения.
-
         Проходит по всем OBX-сегментам сообщения и собирает значения,
         используя Observation Sub-ID как идентификатор параметра.
-
-        Args:
-            message: Разобранное HL7-сообщение
-
-        Returns:
-            AccentM320Result: Структурированный результат анализа
-
-        Raises:
-            ValueError: Если в сообщении нет OBX-сегментов
-            ValidationError: Если собранные данные не проходят валидацию
-
-        Note:
-            Использует Observation Sub-ID для сопоставления с полями
-            схемы AccentM320BACResult. Например:
-                - "1" -> "ALAT IIGEN"
-                - "2" -> "ALP"
-                - "3" -> "TOTAL PROTEIN"
-                - ...
         """
         raw = {}
 

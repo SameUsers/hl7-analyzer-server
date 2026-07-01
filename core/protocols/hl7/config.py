@@ -12,12 +12,6 @@ from core.protocols.hl7.parser import Hl7Parser
 #
 # Используется в DeviceProfile для конфигурации обработчиков
 # анализаторов, работающих по протоколу HL7.
-#
-# Пример:
-#     profile = DeviceProfile(
-#         protocol=HL7_V1,
-#         builder=Accent320Builder,
-#     )
 HL7_V1 = ProtocolConfig(
     framer=Hl7Framer,
     parser=Hl7Parser,

@@ -6,15 +6,9 @@ from core.contracts.handler import HandlerInterface
 class TCPSession:
     """
     TCP-сессия для обработки данных от одного клиента.
-
     Представляет собой логическое соединение с клиентом (анализатором).
     Инкапсулирует состояние сессии и делегирует обработку данных
     соответствующему обработчику.
-
-    Attributes:
-        _host (str): IP-адрес клиента
-        _port (int): Порт клиента
-        _handler (HandlerInterface): Обработчик данных для этого клиента
     """
 
     def __init__(
@@ -25,11 +19,6 @@ class TCPSession:
     ) -> None:
         """
         Инициализация TCP-сессии.
-
-        Args:
-            client_host: IP-адрес клиента
-            client_port: Порт клиента
-            handler: Обработчик для управления данными от клиента
         """
         self._host = client_host
         self._port = client_port
@@ -46,15 +35,8 @@ class TCPSession:
     async def handle(self, chunk: bytes) -> None:
         """
         Обрабатывает входящий блок данных.
-
         Делегирует обработку данных хендлеру, который выполняет
         парсинг, валидацию и сохранение результатов.
-
-        Args:
-            chunk: Блок данных в виде байтов
-
-        Raises:
-            Exception: Пробрасывает исключения от хендлера
         """
         await self.handler.on_data(chunk=chunk)
         logger.debug(

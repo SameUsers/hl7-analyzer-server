@@ -66,22 +66,8 @@ class SaveToJson(StorageInterface):
     ) -> None:
         """
         Сохраняет результат анализа в JSON-файл.
-
         Строит путь для сохранения на основе типа анализатора и даты,
         создает необходимые директории и записывает данные в файл.
-
-        Args:
-            message: Результат анализа для сохранения
-
-        Raises:
-            IOError: При ошибке создания директории или записи файла
-            TypeError: Если данные не сериализуемы в JSON
-
-        Example:
-            >>> storage = SaveToJson()
-            >>> result = AnalyzeResult(...)
-            >>> await storage.save_analyze_result(result)
-            # Сохранит в: Analyze/BAC/2026-06-30/2026-06-30-45-BAC.json
         """
         # Строим путь для сохранения
         save_path = build_analyze_path(

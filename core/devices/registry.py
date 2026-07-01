@@ -10,22 +10,12 @@ from core.protocols.hl7.config import HL7_V1
 # Каждый профиль определяет:
 #   - Протокол обмена (HL7_V1, HL7_V2 и т.д.)
 #   - Билдер для парсинга данных конкретного анализатора
-#
-# При добавлении нового анализатора необходимо:
-#   1. Создать билдер в соответствующей директории
-#   2. Добавить запись в реестр с IP-адресом устройства
-#
-# Пример:
-#     "192.168.1.100": DeviceProfile(
-#         protocol=HL7_V1,
-#         builder=NewAnalyzerBuilder
-#     )
 DEVICE_REGISTRY = {
-    "127.0.0.2": DeviceProfile(
+    "127.0.0.1": DeviceProfile(
         protocol=HL7_V1,
         builder=Accent320Builder,
     ),
-    "127.0.0.1": DeviceProfile(
+    "127.0.0.2": DeviceProfile(
         protocol=HL7_V1,
         builder=Vet5160Builder,
     ),

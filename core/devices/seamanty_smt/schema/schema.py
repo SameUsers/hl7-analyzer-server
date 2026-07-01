@@ -6,19 +6,11 @@ from core.schemas.analyze_result import AnalyzeResult
 class RedSchema(BaseModel):
     """
     Схема результатов для анализатора RED (коагулологические исследования).
-
     Содержит показатели свертываемости крови:
     - АЧТВ (активированное частичное тромбопластиновое время)
     - ПВ (протромбиновое время)
     - ТВ (тромбиновое время)
     - Фибриноген
-
-    Attributes:
-        analyze_type: Тип анализа (фиксированно "RED")
-        APTT: Активированное частичное тромбопластиновое время
-        PT: Протромбиновое время
-        TT: Тромбиновое время
-        Fib: Фибриноген
     """
 
     analyze_type: str = Field(default="RED")
@@ -31,9 +23,7 @@ class RedSchema(BaseModel):
 class PinkSchema(BaseModel):
     """
     Схема результатов для анализатора PINK (газы крови и электролиты).
-
     Содержит показатели кислотно-щелочного состояния и электролитов.
-
     Attributes:
         analyze_type: Тип анализа (фиксированно "PINK")
         Crea: Креатинин
@@ -70,9 +60,7 @@ class PinkSchema(BaseModel):
 class YellowSchema(BaseModel):
     """
     Схема результатов для анализатора YELLOW (биохимия).
-
     Содержит биохимические показатели сыворотки крови.
-
     Attributes:
         analyze_type: Тип анализа (фиксированно "YELLOW")
         ALB: Альбумин
@@ -115,9 +103,7 @@ class YellowSchema(BaseModel):
 class GreenSchema(BaseModel):
     """
     Схема результатов для анализатора GREEN (биохимия расширенная).
-
     Содержит расширенный набор биохимических показателей.
-
     Attributes:
         analyze_type: Тип анализа (фиксированно "GREEN")
         ALB: Альбумин
@@ -160,9 +146,7 @@ class GreenSchema(BaseModel):
 class BrownSchema(BaseModel):
     """
     Схема результатов для анализатора BROWN (биохимия полная).
-
     Содержит наиболее полный набор биохимических показателей.
-
     Attributes:
         analyze_type: Тип анализа (фиксированно "BROWN")
         ALB: Альбумин
@@ -224,26 +208,11 @@ SeamatyResultData = RedSchema | PinkSchema | YellowSchema | GreenSchema | BrownS
 class SeamantyResult(AnalyzeResult[SeamatyResultData]):
     """
     Результат анализа для анализатора Seamaty SMT-120VP.
-
     Поддерживает пять типов анализов:
     - RED: Коагулологические исследования
     - PINK: Газы крови и электролиты
     - YELLOW: Биохимия (стандарт)
     - GREEN: Биохимия (расширенная)
     - BROWN: Биохимия (полная)
-
-    Attributes:
-        analyzer_name: Название анализатора ("Seamanty")
-        result: Данные результата (один из пяти типов)
-
-    Example:
-        >>> red_result = RedSchema(APTT=32.5, PT=12.0, TT=15.0, Fib=3.2)
-        >>> result = SeamantyResult(result=red_result)
-        >>> result.analyzer_name
-        'Seamanty'
-        >>> result.result.analyze_type
-        'RED'
     """
-
     analyzer_name: str = "Seamanty"
-    """Название анализатора Seamaty SMT-120VP."""

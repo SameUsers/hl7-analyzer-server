@@ -7,18 +7,11 @@ from core.infrastructure.tcp.buffer import DefaultBuffer
 class Hl7Framer(FramerInterface):
     """
     Фреймер для выделения HL7-сообщений из потока данных (версия 1).
-
     Реализует извлечение сообщений формата HL7 из байтового потока.
     Использует стандартные маркеры HL7:
         - START_BLOCK: 0x0B (VT - Vertical Tab)
         - END_BLOCK:   0x1C 0x0D (FS + CR)
-
     Работает как синглтон для предотвращения множественных экземпляров.
-
-    Attributes:
-        START_BLOCK (bytes): Маркер начала сообщения (0x0B)
-        END_BLOCK (bytes): Маркер конца сообщения (0x1C 0x0D)
-        _initialized (bool): Флаг инициализации синглтона
     """
 
     _instance = None
@@ -33,9 +26,6 @@ class Hl7Framer(FramerInterface):
     def __new__(cls):
         """
         Создает или возвращает существующий экземпляр синглтона.
-
-        Returns:
-            Hl7FramerV1: Единственный экземпляр класса
         """
         if cls._instance is None:
             cls._instance = super().__new__(cls)
@@ -51,24 +41,8 @@ class Hl7Framer(FramerInterface):
     def extract_message(self, buffer: DefaultBuffer) -> bytes | None:
         """
         Извлекает полное HL7-сообщение из буфера.
-
         Ищет маркеры начала и конца сообщения. Если оба найдены,
         извлекает сообщение без маркеров и удаляет его из буфера.
-
-        Args:
-            buffer: Буфер с накопленными данными
-
-        Returns:
-            bytes | None: Извлеченное сообщение или None,
-                         если сообщение не полное
-
-        Example:
-            >>> framer = Hl7FramerV1()
-            >>> buffer = DefaultBuffer()
-            >>> buffer.append(b"\\x0bMSH|...\\x1c\\x0d")
-            >>> message = framer.extract_message(buffer)
-            >>> message
-            b'MSH|...'
         """
         # Ищем маркеры начала и конца
         start = buffer.find(self.START_BLOCK)
