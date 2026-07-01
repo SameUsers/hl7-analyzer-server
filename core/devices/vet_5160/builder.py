@@ -28,32 +28,21 @@ class Vet5160Builder(BuilderInterface):
         - Игнорирует сегменты с "Image" в идентификаторе (графика)
         """
         raw = {}
-
         for obx in message.obx:
-            # Пропускаем OBX-сегменты без идентификатора
             if not obx.observation_identifier:
                 continue
-
-            # Пропускаем сегменты без значения
             if obx.observation_value is None:
                 continue
-
-            # Пропускаем графические данные (гистограммы, скаттерограммы)
             if "Image" in str(obx.observation_identifier):
                 logger.debug(
                     "Skipping image data: {}",
                     obx.observation_identifier,
                 )
                 continue
-
             raw[obx.observation_identifier] = obx.observation_value
-
-        logger.debug(
-            "Built Vet 5160 result with {} parameters",
-            len(raw),
-        )
-
-        # Валидируем и возвращаем результат
+        logger.debug("Built Vet 5160 result with {} parameters",
+                     len(raw)
+                     )
         return Vet5160Result(result=raw)
 
     def __del__(self) -> None:

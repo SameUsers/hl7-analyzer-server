@@ -23,6 +23,13 @@ class Hl7Parser(ParserInterface):
     _instance = None
     _initialized = False
 
+    HL7_SEGMENTS: dict[str, OBR|OBX|PID|MSH] = {
+        'MSH' : MSH,
+        'PID' : PID,
+        'OBR' : OBR,
+        'OBX' : OBX
+    }
+
     def __new__(cls):
         """
         Создает или возвращает существующий экземпляр синглтона.
@@ -35,15 +42,7 @@ class Hl7Parser(ParserInterface):
         """Инициализация парсера."""
         if self._initialized:
             return
-
         self._initialized = True
-        self._segment_map = {
-            "MSH": MSH,
-            "PID": PID,
-            "OBR": OBR,
-            "OBX": OBX,
-        }
-
         logger.debug("Created {}", self)
 
     def _extract_rows(self, message: str) -> list[str]:
@@ -62,11 +61,10 @@ class Hl7Parser(ParserInterface):
         """
         Создает объект сегмента из значений.
         """
-        segment_cls = self._segment_map.get(segment_name)
+        segment_cls = Hl7Parser.HL7_SEGMENTS.get(segment_name)
         if segment_cls is None:
             logger.debug("Unknown segment: {}", segment_name)
             return None
-
         return segment_cls.from_values(values)
 
     def process_message(self, message: str) -> HL7Message:

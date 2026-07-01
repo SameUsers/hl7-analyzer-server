@@ -133,7 +133,29 @@ OBX|3|NM|HGB||15.1|g/dL
   }
 }
 ```
+## Пример YAML конфигурации описания аппаратов
+```yaml
+server:
+  host: localhost
+  port: 8000
+  read_size: 10240
 
+storage:
+  analyze_path: /any/path
+
+devices:
+  - device_ip: 127.0.0.1
+    protocol: HL7_V1
+    device_name: VET_5160
+
+  - device_ip: 127.0.0.2
+    protocol: HL7_V1
+    device_name: ACCENT_M320
+
+  - device_ip: 192.168.0.12
+    protocol: HL7_V1
+    device_name: SEAMATY_SMT_120VP
+```
 ---
 
 ## Установка и запуск

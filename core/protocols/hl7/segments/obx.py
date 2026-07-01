@@ -27,7 +27,6 @@ class OBX(HL7Segment):
         equipment_instance_identifier: ID оборудования (OBX.18)
         date_time_of_analysis: Дата/время анализа (OBX.19)
     """
-
     set_id: str | None = None
     value_type: str | None = None
     observation_identifier: str | None = None

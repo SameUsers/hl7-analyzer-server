@@ -24,20 +24,13 @@ class SemantyBuilder(BuilderInterface):
         используя Observation Identifier как идентификатор параметра.
         """
         raw = {}
-
         for obx in message.obx:
-            # Пропускаем OBX-сегменты без идентификатора
             if not obx.observation_identifier:
                 continue
-
             key = obx.observation_identifier
-
-            # Используем значение наблюдения или референтный диапазон
             value = obx.observation_value or obx.reference_range
-
             if value is not None:
                 raw[key] = value
-
         logger.debug(
             "Built Seamaty SMT result with {} parameters",
             len(raw),
