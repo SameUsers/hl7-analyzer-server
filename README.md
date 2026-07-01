@@ -102,16 +102,35 @@ OBX|3|NM|HGB||15.1|g/dL
 
 ```json
 {
-  "device": "Vet5160",
-  "patient": {
-    "id": "10001",
-    "name": "Lucky"
-  },
-  "results": [
-    {"code": "1001", "name": "WBC", "value": 7.42},
-    {"code": "1002", "name": "RBC", "value": 6.91},
-    {"code": "1003", "name": "HGB", "value": 15.1}
-  ]
+  "analyzer_name": "5160Vet",
+  "result": {
+    "analyze_type": "OAK",
+    "WBC": "7.86",
+    "LYM%": "5.00",
+    "MON%": "9.51",
+    "NEU%": "85.17",
+    "EOS%": "0.20",
+    "BASO%": "0.12",
+    "LYM#": "0.393",
+    "MON#": "0.747",
+    "NEU#": "6.696",
+    "EOS#": "0.015",
+    "BASO#": "0.009",
+    "RBC": "7.47",
+    "HGB": "18.4",
+    "HCT": "55.6",
+    "MCV": "74.5",
+    "MCH": "24.6",
+    "MCHC": "33.0",
+    "RDW_CV": "11.9",
+    "RDW_SD": "37.4",
+    "PLT": "223",
+    "MPV": "12.0",
+    "PDW": "17.9",
+    "PCT": "0.26",
+    "P_LCR": "29.26",
+    "P_LCC": "65"
+  }
 }
 ```
 
