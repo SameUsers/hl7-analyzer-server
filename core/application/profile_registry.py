@@ -10,10 +10,8 @@ class DeviceProfileFactory:
     @staticmethod
     def register(device: DeviceConfig)->None:
         DEVICE_REGISTRY[device.device_ip] = DeviceProfile(
-            device_type=device.device_type,
             device_ip=device.device_ip,
             protocol= PROTOCOL_REGISTRY.get(device.protocol),
             builder=DEVICE_BUILDER_REGISTRY.get(device.device_name)
             )
 
-device_profile_factory = DeviceProfileFactory()

@@ -2,7 +2,7 @@ import asyncio
 
 from loguru import logger
 
-from core.application.factories.component_factory import handler_factory
+from core.application.factories.handler_factory import handler_factory
 from core.application.registry import get_device
 from core.infrastructure.tcp.session import TCPSession
 

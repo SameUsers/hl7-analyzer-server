@@ -11,12 +11,6 @@ class DeviceBuilderEnum(StrEnum):
     ACCENT_M320 = "ACCENT_M320"
     SEAMATY_SMT_120VP = "SEAMATY_SMT_120VP"
 
-
-class DeviceTypeEnum(StrEnum):
-    ANALIZER = 'ANALIZER'#Анализатор
-
-
-
 #Тут регистрируются билдеры реализованные
 #Из них потом выбирается по хосту нужный билдер для того или инонго анализатора
 DEVICE_BUILDER_REGISTRY: dict[DeviceBuilderEnum, BuilderInterface] = {

@@ -4,7 +4,7 @@ from pathlib import Path
 from loguru import logger
 
 from core.contracts.storage import StorageInterface
-from core.schemas.analyze_result import AnalyzeResult
+from core.domain.analyze_result import AnalyzeResult
 from core.shared.path import build_analyze_path
 
 

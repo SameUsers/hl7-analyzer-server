@@ -1,7 +1,7 @@
 from loguru import logger
 
 from core.contracts.builder import BuilderInterface
-from core.devices.seamanty_smt.schema.schema import SeamantyResult
+from core.devices.seamanty_smt.schemas import SeamantyResult
 from core.protocols.hl7.message import HL7Message
 
 

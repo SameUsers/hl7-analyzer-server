@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from pydantic_settings import SettingsConfigDict
 from pydantic_settings_sources import YamlEnvSettings
 
-from core.devices import DeviceBuilderEnum, DeviceTypeEnum
+from core.devices import DeviceBuilderEnum
 from core.protocols import ProtocolEnum
 
 
@@ -19,7 +19,6 @@ class StorageConfig(BaseModel):
 
 
 class DeviceConfig(BaseModel):
-    device_type: DeviceTypeEnum
     device_ip: str
     protocol: ProtocolEnum
     device_name: DeviceBuilderEnum

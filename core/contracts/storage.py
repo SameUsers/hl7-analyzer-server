@@ -4,7 +4,7 @@ from pathlib import Path
 from loguru import logger
 
 from core.infrastructure.config.config import settings
-from core.schemas.analyze_result import AnalyzeResult
+from core.domain.analyze_result import AnalyzeResult
 
 
 class StorageInterface(ABC):

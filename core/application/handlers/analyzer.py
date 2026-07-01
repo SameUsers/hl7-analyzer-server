@@ -6,7 +6,7 @@ from core.contracts.handler import HandlerInterface
 from core.contracts.parser import ParserInterface
 from core.contracts.storage import StorageInterface
 from core.infrastructure.tcp.buffer import DefaultBuffer
-from core.schemas.analyze_result import AnalyzeResult
+from core.domain.analyze_result import AnalyzeResult
 from core.shared.decoder import decode_message
 
 
