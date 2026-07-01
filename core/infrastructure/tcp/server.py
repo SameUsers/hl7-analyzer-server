@@ -3,7 +3,7 @@ import asyncio
 from loguru import logger
 
 from core.application.factories.component_factory import handler_factory
-from core.application.factories.device_registry import registry_device
+from core.application.registry import get_device
 from core.infrastructure.tcp.session import TCPSession
 
 
@@ -45,7 +45,7 @@ class TcpServer:
         client_host, client_port = writer.get_extra_info("peername")
 
         # Создаем обработчик для конкретного клиента
-        session_handler = handler_factory.create_handler(registry_device.get_device(client_host))
+        session_handler = handler_factory.create_handler(get_device(client_host))
         session = TCPSession(
             client_host=client_host,
             client_port=client_port,

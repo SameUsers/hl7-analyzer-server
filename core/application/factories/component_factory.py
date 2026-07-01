@@ -1,6 +1,6 @@
 from core.application.handlers.analyzer import AnalyzerHandler
 from core.contracts.handler import HandlerInterface
-from core.devices.enums import DeviceTypeEnum
+from core.devices import DeviceTypeEnum
 from core.devices.profile import DeviceProfile
 
 

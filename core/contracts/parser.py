@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from core.protocols.core.schema import ProtocolMessage
+from core.protocols.schema import ProtocolMessage
 
 
 class ParserInterface(ABC):

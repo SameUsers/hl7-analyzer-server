@@ -1,5 +1,5 @@
 from core.infrastructure.tcp.buffer import DefaultBuffer
-from core.protocols.core.config import ProtocolConfig
+from core.protocols.config import ProtocolConfig
 from core.protocols.hl7.framer import Hl7Framer
 from core.protocols.hl7.parser import Hl7Parser
 

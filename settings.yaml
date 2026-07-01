@@ -8,12 +8,12 @@ storage:
 
 devices:
   - device_type: ANALIZER
-    device_ip: 192.168.0.10
+    device_ip: 127.0.0.1
     protocol: HL7_V1
     device_name: VET_5160
 
   - device_type: ANALIZER
-    device_ip: 127.0.0.1
+    device_ip: 127.0.0.2
     protocol: HL7_V1
     device_name: ACCENT_M320
 

@@ -15,12 +15,6 @@ class ProtocolConfig:
     Используется в DeviceProfile для настройки обработчика под конкретный
     протокол (HL7, ASTM, MQTT и т.д.).
     """
-
     framer: type[FramerInterface]
-    """Класс фреймера для выделения сообщений из потока данных."""
-
     parser: type[ParserInterface]
-    """Класс парсера для преобразования текстовых сообщений."""
-
     buffer: type[DefaultBuffer]
-    """Класс буфера для временного хранения входящих данных."""

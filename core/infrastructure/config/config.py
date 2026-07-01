@@ -4,8 +4,8 @@ from pydantic import BaseModel
 from pydantic_settings import SettingsConfigDict
 from pydantic_settings_sources import YamlEnvSettings
 
-from core.devices.enums import DeviceBuilderEnum, DeviceTypeEnum
-from core.protocols.core.enums import ProtocolEnum
+from core.devices import DeviceBuilderEnum, DeviceTypeEnum
+from core.protocols import ProtocolEnum
 
 
 class TCPServerConfig(BaseModel):
